@@ -57,8 +57,32 @@ function goToSearchPage(th) {
     location.href = url;
 }
 
+function  logout() {
+    $.ajax({
+        url:'/api/v1/user/session',
+        type:'DELETE',
+        success:function (data) {
+            if(data.code==RET.OK){
+              $(".top-bar>.user-info").hide();
+              $(".top-bar>.register-login").show();
+            }
+        }
+        }
+    )
+
+
+}
+
 $(document).ready(function(){
-    $(".top-bar>.register-login").show();
+
+    $.get('/api/v1/user/session',function (data) {
+        if(data.code==RET.OK){
+            $(".top-bar>.user-info").show().find('.user-name').text(data.name);
+
+        }else{
+            $(".top-bar>.register-login").show();
+        }
+    })
     var mySwiper = new Swiper ('.swiper-container', {
         loop: true,
         autoplay: 2000,
